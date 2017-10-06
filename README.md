@@ -4,7 +4,7 @@
 
  Then launch in another terminal
 
- 	rosrun human_bio_octomap voxel_occupancy
+ 	rosrun human_bio_octomap voxel_occupancy_node
 
 
     @inproceedings{mainprice2015predicting,
