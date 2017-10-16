@@ -80,7 +80,9 @@ Model human_bio::LoadMoveitModelFromString(const std::string &xml_robot) {
   cout << "Create URDF model" << endl;
   urdf::Model model;
   model.initString(xml_robot);
-  auto urdf_model = std::make_shared<urdf::ModelInterface>(model);
+  // auto urdf_model = std::make_shared<urdf::ModelInterface>(model);
+   auto urdf_model = boost::shared_ptr<urdf::ModelInterface>(
+               new urdf::ModelInterface(model));
 
   // Semantic model
   cout << "Create SRDF model" << endl;
