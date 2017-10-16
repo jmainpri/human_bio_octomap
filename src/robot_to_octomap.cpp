@@ -89,7 +89,7 @@ Model human_bio::LoadMoveitModelFromString(const std::string &xml_robot) {
   srdf::Model semantic_model;
   semantic_model.initString(*urdf_model, "");
   //  auto srf_model = std::make_shared<const srdf::Model>(semantic_model);
-  auto srf_model = boost::shared_ptr<urdf::ModelInterface>(
+  auto srf_model = boost::shared_ptr<srdf::Model>(
               new srdf::Model(semantic_model));
 
   return Model(new moveit::core::RobotModel(urdf_model, srf_model));
