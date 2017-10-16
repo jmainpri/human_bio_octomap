@@ -13,8 +13,8 @@
 namespace human_bio
 {
 typedef std::map<std::string, double> Config;
-typedef boost::shared_ptr<const moveit::core::RobotModel> Model;
-typedef boost::shared_ptr<moveit::core::RobotState> State;
+typedef std::shared_ptr<const moveit::core::RobotModel> Model;
+typedef std::shared_ptr<moveit::core::RobotState> State;
 
 // TODO move these function to utils package
 Model LoadMoveitModelFromString(const std::string& xml_robot);
