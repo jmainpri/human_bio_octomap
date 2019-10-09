@@ -1,3 +1,35 @@
+/**
+ * Copyright (c) 2019, Jim Mainprice
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *
+ * 1. Redistributions of source code must retain the above copyright notice,
+ *this
+ * list of conditions and the following disclaimer.
+ *
+ * 2. Redistributions in binary form must reproduce the above copyright notice,
+ * this list of conditions and the following disclaimer in the documentation
+ * and/or other materials provided with the distribution.
+ *
+ * 3. Neither the name of the copyright holder nor the names of its contributors
+ * may be used to endorse or promote products derived from this software without
+ * specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ *AND
+ * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+ * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+ * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+ * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+ * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+
 #include <human_bio_octomap/robot_to_octomap.hpp>
 #include <moveit/robot_model/robot_model.h>
 #include <moveit/distance_field/find_internal_points.h>
@@ -84,14 +116,13 @@ Model human_bio::LoadMoveitModelFromString(const std::string& xml_robot)
   cout << "Create URDF model" << endl;
   urdf::Model model;
   model.initString(xml_robot);
-  boost::shared_ptr<const urdf::ModelInterface> urdf_model(
-      new urdf::ModelInterface(model));
+  auto urdf_model = std::make_shared<urdf::ModelInterface>(model);
 
   // Semantic model
   cout << "Create SRDF model" << endl;
   srdf::Model semantic_model;
   semantic_model.initString(*urdf_model, "");
-  boost::shared_ptr<const srdf::Model> srf_model(
+  std::shared_ptr<const srdf::Model> srf_model(
       new srdf::Model(semantic_model));
 
   return Model(new moveit::core::RobotModel(urdf_model, srf_model));
@@ -149,7 +180,8 @@ std::vector<bodies::Body*> ModelToBodies::GetBodies()
       } else {
         pose = base_frame_ * link_pose * shape_pose;
       }
-      body->setPose(pose);
+      Eigen::Isometry3d pose_tmp(pose.matrix());
+      body->setPose(pose_tmp);
     }
   }
   if (bodies_.empty()) {

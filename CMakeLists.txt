@@ -63,7 +63,7 @@ find_package(catkin
 ## DEPENDS: system dependencies of this project that dependent projects also need
 
 set(THIS_PACKAGE_INCLUDE_DIRS
-    include
+    src
 )
 
 catkin_package(
@@ -99,18 +99,18 @@ include_directories(
 
 
 # Compile options
-set(CMAKE_CXX_FLAGS "-std=c++11 ${CMAKE_CXX_FLAGS} -O3")
+set(CMAKE_CXX_FLAGS "-std=c++14 ${CMAKE_CXX_FLAGS} -O3")
 # -Wall -Wextra -Werror")
 
 
 # Local directory
 file(GLOB_RECURSE
-    INC_HUMAN_OCTOMAP "include/human_bio_octomap/*.hpp")
+    INC_HUMAN_OCTOMAP "src/human_bio_octomap/*.hpp")
 
 ## Declare a cpp library
 add_library(${PROJECT_NAME} SHARED
-   src/robot_to_octomap.cpp
-   src/scene_subscriber.cpp
+   src/human_bio_octomap/robot_to_octomap.cpp
+   src/human_bio_octomap/scene_subscriber.cpp
    ${INC_HUMAN_OCTOMAP}
 )
 add_dependencies(${PROJECT_NAME} ${catkin_EXPORTED_TARGETS})
@@ -118,7 +118,7 @@ target_link_libraries(${PROJECT_NAME} ${catkin_LIBRARIES})
 
 ## Declare a cpp executable
 add_executable(voxel_occupancy_node
-    src/voxel_occupancy_node.cpp)
+    src/human_bio_octomap/voxel_occupancy_node.cpp)
 add_dependencies(voxel_occupancy_node ${catkin_EXPORTED_TARGETS} )
 target_link_libraries(voxel_occupancy_node
   ${catkin_LIBRARIES} ${PROJECT_NAME} glog gflags)
